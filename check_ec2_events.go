@@ -57,7 +57,7 @@ func main() {
 	if instanceStatus != nil {
 		fmt.Printf("DEBUG - Instance status output:\n%# v\n", pretty.Formatter(instanceStatus))
 
-		switch code := *instanceStatus.Code; code {
+		switch code := instanceStatus.Code; *code {
 		case "instance-reboot":
 			fmt.Println("WARNING - instance reboot scheduled for", instanceStatus.NotBefore, ". Description:", instanceStatus.Description)
 			os.Exit(1)
