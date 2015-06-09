@@ -46,7 +46,7 @@ func main() {
 
 	svc := ec2.New(&aws.Config{Region: "us-east-1"})
 
-	instanceId := getInstanceId("sex", svc)
+	instanceId := getInstanceId("test", svc)
 
 	if instanceId == nil {
 		fmt.Println("WARNING - no instance was found with that ID")
