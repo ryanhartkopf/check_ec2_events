@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/kr/pretty"
+	//"github.com/kr/pretty"
 	"os"
 )
 
@@ -63,7 +63,7 @@ func main() {
 
 	instanceStatus := getInstanceStatus(instanceId, svc)
 	if instanceStatus != nil {
-		fmt.Printf("DEBUG - Instance status output:\n%# v\n", pretty.Formatter(instanceStatus))
+		//fmt.Printf("DEBUG - Instance status output:\n%# v\n", pretty.Formatter(instanceStatus))
 
 		switch code := instanceStatus.Code; *code {
 		case "instance-reboot":
