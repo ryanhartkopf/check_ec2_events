@@ -80,7 +80,7 @@ func main() {
 			os.Exit(2)
 		}
 	} else {
-		fmt.Println("OK - no events for instance")
+		fmt.Println("OK - no events for instance", *instanceNamePtr)
 		os.Exit(0)
 	}
 
