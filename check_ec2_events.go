@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
@@ -8,7 +9,8 @@ import (
 	"os"
 )
 
-var svc ec2.EC2
+var instanceNamePtr = flag.String("name", "", "Name of the EC2 instance to check for events")
+var awsRegionPtr = flag.String("region", "us-east-1", "AWS region")
 
 func getInstanceId(instanceName string, svc *ec2.EC2) *string {
 	resp, err := svc.DescribeInstances(&ec2.DescribeInstancesInput{
@@ -44,13 +46,19 @@ func getInstanceStatus(instanceId *string, svc *ec2.EC2) *ec2.InstanceStatusEven
 
 func main() {
 
-	svc := ec2.New(&aws.Config{Region: "us-east-1"})
+	flag.Parse()
+	svc := ec2.New(&aws.Config{Region: *awsRegionPtr})
 
-	instanceId := getInstanceId("test", svc)
+	if *instanceNamePtr == "" {
+		flag.Usage()
+		os.Exit(1)
+	}
+
+	instanceId := getInstanceId(*instanceNamePtr, svc)
 
 	if instanceId == nil {
-		fmt.Println("WARNING - no instance was found with that ID")
-		os.Exit(2)
+		fmt.Println("WARNING - no instance was found with instance name", *instanceNamePtr, "in region", *awsRegionPtr)
+		os.Exit(1)
 	}
 
 	instanceStatus := getInstanceStatus(instanceId, svc)
