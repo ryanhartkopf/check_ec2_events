@@ -78,6 +78,9 @@ func main() {
 		case "instance-retirement", "instance-stop":
 			fmt.Println("CRITICAL - instance is scheduled to be retired on ", instanceStatus.NotBefore, ". Description:", instanceStatus.Description)
 			os.Exit(2)
+		default:
+			fmt.Println("CRITICAL - unknown event type", instanceStatus.Code, "scheduled for", instanceStatus.NotBefore, ". Description:", instanceStatus.Description)
+			os.Exit(2)
 		}
 	} else {
 		fmt.Println("OK - no events for instance", *instanceNamePtr)
