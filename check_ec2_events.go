@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	//"github.com/kr/pretty"
 	"os"
 )
 
@@ -63,28 +62,25 @@ func main() {
 
 	instanceStatus := getInstanceStatus(instanceId, svc)
 	if instanceStatus != nil {
-		//fmt.Printf("DEBUG - Instance status output:\n%# v\n", pretty.Formatter(instanceStatus))
-
 		switch code := instanceStatus.Code; *code {
 		case "instance-reboot":
-			fmt.Println("WARNING - instance reboot scheduled for", instanceStatus.NotBefore, ". Description:", instanceStatus.Description)
+			fmt.Println("WARNING - instance", *instanceNamePtr, "will be rebooted at", instanceStatus.NotBefore, "- Description:", *instanceStatus.Description)
 			os.Exit(1)
 		case "system-reboot":
-			fmt.Println("WARNING - host will be rebooted at ", instanceStatus.NotBefore, ". Description:", instanceStatus.Description)
+			fmt.Println("WARNING - physical host will be rebooted at", *instanceStatus.NotBefore, "- Description:", *instanceStatus.Description)
 			os.Exit(1)
 		case "system-maintenance":
-			fmt.Println("WARNING - host maintenance scheduled for ", instanceStatus.NotBefore, ". Description:", instanceStatus.Description)
+			fmt.Println("WARNING - physical host maintenance will be performed at", instanceStatus.NotBefore, "- Description:", *instanceStatus.Description)
 			os.Exit(1)
 		case "instance-retirement", "instance-stop":
-			fmt.Println("CRITICAL - instance is scheduled to be retired on ", instanceStatus.NotBefore, ". Description:", instanceStatus.Description)
+			fmt.Println("CRITICAL - instance", *instanceNamePtr, "will be retired at", instanceStatus.NotBefore, "- Description:", *instanceStatus.Description)
 			os.Exit(2)
 		default:
-			fmt.Println("CRITICAL - unknown event type", instanceStatus.Code, "scheduled for", instanceStatus.NotBefore, ". Description:", instanceStatus.Description)
+			fmt.Println("CRITICAL - unknown event type", instanceStatus.Code, "scheduled for", instanceStatus.NotBefore, "- Description:", *instanceStatus.Description)
 			os.Exit(2)
 		}
 	} else {
 		fmt.Println("OK - no events for instance", *instanceNamePtr)
 		os.Exit(0)
 	}
-
 }
