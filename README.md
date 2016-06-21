@@ -10,7 +10,7 @@ Usage of ./check_ec2_events:
 ```
 
 ## Credentials
-See the "[Getting Started - Using Credentials](https://github.com/aws/aws-sdk-go/wiki/Getting-Started-Credentials)" document from the AWS Go SDK documentation for more information about configuring credentials.
+See the "[Configuring SDK - Specifying Credentials](https://github.com/aws/aws-sdk-go/wiki/configuring-sdk#specifying-credentials)" document from the AWS Go SDK documentation for more information about configuring credentials.
 
 ## Example Output
 ```
